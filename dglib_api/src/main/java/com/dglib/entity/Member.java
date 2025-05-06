@@ -29,13 +29,17 @@ public class Member {
 	private String gender;
 	
 	private LocalDate birthDate;
+	
 	private String phone;
 	private String addr;
 	private String email;
+	
 	private boolean checkSms;
 	private boolean checkEmail;
 	private boolean checkTerms;
+	
 	private int panalty;
+	
 	private LocalDate joinDate;
 	
 	private String kakao;
