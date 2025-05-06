@@ -22,12 +22,11 @@ import lombok.NoArgsConstructor;
 public class Book {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(length = 13)
 	String isbn;  // ISBN 0으로 시작 가능해서 String으로 설정
 	
 	@Column(nullable = false, length = 150)
-	String bookName;
+	String title;
 	
 	@Column(nullable = false, length = 100)
 	String author;
@@ -36,13 +35,13 @@ public class Book {
 	String publisher;
 	
 	@Column(nullable = false)
-	LocalDateTime publishDate;
+	String pubDate;
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
-	String bookDescription;
+	String description;
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
-	String bookImageUrl;
+	String cover;
 	
 	
 	

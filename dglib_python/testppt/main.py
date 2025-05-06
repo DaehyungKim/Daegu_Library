@@ -8,11 +8,19 @@ import numpy as np
 from ultralytics import YOLO
 import cv2
 from starlette.middleware.base import BaseHTTPMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 import logging
 
 logging.getLogger().setLevel(logging.CRITICAL)
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8090"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 model = YOLO("yolov8n.pt")
 
 class DetectionResult(BaseModel):
