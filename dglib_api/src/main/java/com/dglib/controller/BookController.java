@@ -29,6 +29,7 @@ import com.dglib.dto.BookDto;
 import com.dglib.dto.BookRegistrationDto;
 import com.dglib.dto.BookSummaryDto;
 import com.dglib.dto.LibraryBookDto;
+import com.dglib.dto.RentalDto;
 import com.dglib.repository.BookRepository;
 import com.dglib.repository.LibraryBookRepository;
 import com.dglib.service.books.BookService;
@@ -118,6 +119,16 @@ public class BookController {
 		BookDetailDto bookDetailDto = bookService.getLibraryBookDetail(libraryBookId);
 
 		return ResponseEntity.ok(bookDetailDto);
+	}
+	
+	@GetMapping("/rentallist")
+	public ResponseEntity<Page<RentalDto>> getRentalList(@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int size) {
+		LOGGER.info(page + " ");
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by("rentStartDate").descending());
+		Page<RentalDto> rentalList = bookService.getRentalList(pageable);
+		LOGGER.info("rentalList: {}", rentalList);
+		return ResponseEntity.ok(rentalList);
 	}
 	
 

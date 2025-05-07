@@ -1,12 +1,14 @@
 package com.dglib.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,6 +69,9 @@ public class Member {
     private MemberState state;
 	
 	private String kakao;
+	
+	@OneToMany(mappedBy = "member")
+	private List<Rental> rentals;
 	
 
 }

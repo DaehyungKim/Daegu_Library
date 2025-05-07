@@ -33,14 +33,14 @@ const LibraryBookComponent = () => {
                 <div className="w-1/3">
                     <img
                         src={libraryBookDetail.cover}
-                        alt={libraryBookDetail.title}
+                        alt={libraryBookDetail.bookTitle}
                         className="w-full rounded-lg shadow-lg object-contain"
                     />
                 </div>
 
                 {/* 오른쪽: 도서 정보 섹션 */}
                 <div className="w-2/3">
-                    <h1 className="text-3xl font-bold mb-4">{libraryBookDetail.title}</h1>
+                    <h1 className="text-3xl font-bold mb-4">{libraryBookDetail.bookTitle}</h1>
 
                     <div className="space-y-4">
                         <div className="flex border-b border-gray-200 py-2">

@@ -12,7 +12,6 @@ const LibraryBookListComponent = () => {
             setIsLoading(true);
             const response = await getLibraryBookList();
             setBooks(response.content);
-            setIsLoading(false);
             setPageable(response);
             setIsLoading(false);
         }
@@ -91,6 +90,11 @@ const LibraryBookListComponent = () => {
         <div className="container mx-auto px-4 py-8 max-w-3xl">
             <h2 className="text-3xl font-bold mb-8 text-center">도서 목록</h2>
             <div className="mb-4">총 도서 {pageable.totalElements}</div>
+            {isLoading && books.length > 0 && ( //
+                <div className="absolute inset-0 bg-white bg-opacity-75 flex justify-center items-center z-10">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
+                </div>
+            )}
             <div className="space-y-6">
             {books.map((book, index) => {
                  const libraryBookId = book.libraryBookId;
@@ -104,13 +108,13 @@ const LibraryBookListComponent = () => {
                         <div className="w-full md:w-48 flex justify-center">
                             <img
                                 src={book.cover}
-                                alt={book.title}
+                                alt={book.bookTitle}
                                 className="h-64 object-contain"
                             />
                         </div>
                         <div className="flex-1">
                             <h3 className="text-xl font-semibold mb-4">
-                                {book.title}
+                                {book.bookTitle}
                             </h3>
                             <div className="space-y-2 text-gray-600">
                                 <p className="text-sm">

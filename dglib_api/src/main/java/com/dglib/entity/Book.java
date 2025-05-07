@@ -17,7 +17,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,7 +28,7 @@ public class Book {
 	private String isbn;  // ISBN 0으로 시작 가능해서 String으로 설정
 	
 	@Column(nullable = false, length = 150)
-	private String title;
+	private String bookTitle;
 	
 	@Column(nullable = false, length = 100)
 	private String author;

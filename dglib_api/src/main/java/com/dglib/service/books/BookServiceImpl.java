@@ -14,10 +14,13 @@ import com.dglib.dto.BookDto;
 import com.dglib.dto.BookRegistrationDto;
 import com.dglib.dto.BookSummaryDto;
 import com.dglib.dto.LibraryBookDto;
+import com.dglib.dto.RentalDto;
 import com.dglib.entity.Book;
 import com.dglib.entity.LibraryBook;
+import com.dglib.entity.Rental;
 import com.dglib.repository.BookRepository;
 import com.dglib.repository.LibraryBookRepository;
+import com.dglib.repository.RentalRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +31,7 @@ public class BookServiceImpl implements BookService {
 	private final BookRepository bookRepository;
 	private final ModelMapper modelMapper;
 	private final LibraryBookRepository libraryBookRepository;
+	private final RentalRepository rentalRepository;
 	
 	
 	
@@ -76,6 +80,20 @@ public class BookServiceImpl implements BookService {
 			return dto;
 		}).orElse(null);
 	}
+	
+	@Override
+	public Page<RentalDto> getRentalList(Pageable pageable) {
+		Page<Rental> rentalList = rentalRepository.findAll(pageable);
+		return rentalList.map(rental -> {
+			RentalDto dto = new RentalDto();
+			modelMapper.map(rental.getLibraryBook(), dto);
+			modelMapper.map(rental.getLibraryBook().getBook(), dto);
+			modelMapper.map(rental.getMember(), dto);
+			modelMapper.map(rental, dto);
+			return dto;
+		});
+	}
+	
 	
 	
 	

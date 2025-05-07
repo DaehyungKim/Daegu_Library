@@ -20,18 +20,18 @@ const SearchBookResult = () => {
         const response = await searchBookApi(searchTerm);
         console.log("검색 결과:", response);
         setSearchResults(response);
-        setIsLoading(false);    
+        setIsLoading(false);
     }
 
 
 
     const handleBookSelect = (book) => {
         if (window.opener) {
-           
-            window.opener.postMessage({ 
+
+            window.opener.postMessage({
                 type: 'BOOK_SELECTED',
                 book: {
-                    title: book.title,
+                    bookTitle: book.title,
                     author: book.author,
                     cover: book.cover,
                     publisher: book.publisher,
@@ -52,7 +52,7 @@ const SearchBookResult = () => {
             setCurrentPage(page);
             const response = await searchBookApi(currentSearchTerm, page);
             setSearchResults(response);
-            setIsLoading(false);   
+            setIsLoading(false);
         }
     const renderPagination = () => {
         if (!searchResults) return null;
@@ -61,10 +61,10 @@ const SearchBookResult = () => {
         const startPage = Math.floor((currentPage - 1) / 10) * 10 + 1;
         const endPage = Math.min(startPage + 9, totalPages);
         const pages = [];
-        
+
         for (let i = startPage; i <= endPage; i++) {
             pages.push(
-                <button 
+                <button
                     key={i}
                     className={`mx-1 px-3 py-1 rounded ${currentPage === i ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
                     onClick={() => !isLoading && pageClick(i)}
@@ -101,10 +101,10 @@ const SearchBookResult = () => {
     return (
         <div className="search-book-result">
             <div className="mb-4">
-                    <input type="text" placeholder="검색어를 입력하세요" className="border p-2 rounded" value={searchTerm} 
+                    <input type="text" placeholder="검색어를 입력하세요" className="border p-2 rounded" value={searchTerm}
                     onChange={handleSearch}  onKeyDown={(e) => {if (e.key === 'Enter' && !isLoading) {e.preventDefault(); searchClick();}}}  />
-                    <button onClick={!isLoading ? searchClick : undefined} 
-                    className={`px-4 py-2 rounded ml-2 text-white transition 
+                    <button onClick={!isLoading ? searchClick : undefined}
+                    className={`px-4 py-2 rounded ml-2 text-white transition
                     ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600 cursor-pointer'}`}>
                         검색
                     </button>
@@ -114,24 +114,24 @@ const SearchBookResult = () => {
                     <div>총 {searchResults.total_items}개의 검색 결과가 있습니다. 페이지 총 수는 20페이지로 제한됩니다.</div>
                     <div className="grid grid-cols-5 gap-4">
                     {searchResults.items.map((book, index) => (
-                        <div 
-                            key={index}  
+                        <div
+                            key={index}
                             className={`p-2 border rounded cursor-pointer hover:shadow-lg transition-shadow ${
                                 isLoading ? 'pointer-events-none opacity-50' : ''
                             }`}
                             onClick={() => handleBookSelect(book)}
                         >
-                            <img 
-                                className="w-full h-48 object-contain mb-2" 
-                                src={book.cover} 
-                                alt={book.title} 
+                            <img
+                                className="w-full h-48 object-contain mb-2"
+                                src={book.cover}
+                                alt={book.bookTitle}
                             />
-                            <p className="text-sm truncate">{book.title}</p>
+                            <p className="text-sm truncate">{book.bookTitle}</p>
                         </div>
                 ))}
                 </div>
                 {renderPagination()}
-             </div>   
+             </div>
             )}
              {isLoading && (
                 <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { regBook } from "../api/bookApi";
 
 const initialBookFormData = {
-  title: "",
+  bookTitle: "",
   author: "",
   publisher: "",
   pubDate: "",
@@ -43,7 +43,7 @@ const BookRegComponent = () => {
       if (event.data.type === "BOOK_SELECTED") {
         setLibraryBooks([{ id: 1, location: "", callSign: "" }]);
         setBookFormData({
-          title: event.data.book.title,
+          bookTitle: event.data.book.bookTitle,
           author: event.data.book.author,
           publisher: event.data.book.publisher,
           pubDate: event.data.book.pubDate,
@@ -70,7 +70,7 @@ const BookRegComponent = () => {
         libraryBook.callSign.trim() !== ""
     );
     const isBookDataValid =
-      bookFormData.title &&
+      bookFormData.bookTitle &&
       bookFormData.author &&
       bookFormData.publisher &&
       bookFormData.pubDate &&
@@ -120,7 +120,7 @@ const BookRegComponent = () => {
               <input
                 type="text"
                 className="flex-1 p-3 border rounded bg-white"
-                value={bookFormData.title}
+                value={bookFormData.bookTitle}
                 readOnly
               />
             </div>

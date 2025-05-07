@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class BookDto {
-	private String title;
+	private String bookTitle;
     private String author;
     private String publisher;
     private LocalDate pubDate;

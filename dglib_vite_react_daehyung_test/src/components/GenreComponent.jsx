@@ -13,18 +13,18 @@ const GenreComponent = () => {
         staleTime: Infinity,
         refetchOnWindowFocus: false
     })
-    
+
 
     if (isLoading) return <div>Loading...</div>
     if (isError) return <div>데이터 로딩 중 오류가 발생했습니다.</div>;
     if (!data) {return <div>데이터를 받아오지 못했습니다.</div>;}
     const books = JSON.parse(data.result).response.docs;
     console.log(books)
-    
+
     return (
         <div className="grid grid-cols-5 p-8">
-           
-            
+
+
             {books.map((bookData) => (
                 <div className='p-2 flex flex-col items-center' key={bookData.doc.isbn13}>
                     <div className="w-64 h-64">
@@ -32,13 +32,13 @@ const GenreComponent = () => {
                     </div>
                     <h3 className="text-sm font-semibold text-center max-w-40 pt-2 pb-2 w-full overflow-hidden whitespace-nowrap text-ellipsis">{bookData.doc.bookname}</h3>
                     <p className="text-xs text-gray-600 text-center overflow-hidden max-w-40 whitespace-nowrap text-ellipsis" >{bookData.doc.authors}</p>
-                    
-                    
+
+
                 </div>
              ))}
 
-            
-        
+
+
         </div>
     )
 }

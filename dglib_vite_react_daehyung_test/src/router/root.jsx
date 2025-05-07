@@ -11,6 +11,7 @@ const BookReg = lazy(() => import("../pages/BookReg"));
 const SearchBookResult = lazy(() => import("../components/SearchBookResult"));
 const LibraryBookList = lazy(() => import("../pages/LibraryBookList"));
 const LibraryBook = lazy(() => import("../pages/LibraryBook"));
+const RentList = lazy(() => import("../pages/RentList"));
 
 const root = createBrowserRouter([
 
@@ -46,6 +47,11 @@ const root = createBrowserRouter([
     {
         path : "librarybook/:isbn",
         element: <Suspense fallback={Loading}><LibraryBook /></Suspense>
+
+    },
+    {
+        path : "rentlist",
+        element: <Suspense fallback={Loading}><RentList /></Suspense>
 
     }
 
