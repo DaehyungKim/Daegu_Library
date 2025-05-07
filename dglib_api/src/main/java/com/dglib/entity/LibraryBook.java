@@ -25,16 +25,16 @@ public class LibraryBook {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long libraryBookId;
+	private Long libraryBookId;
 	
 	@Column(length = 30, nullable = false)
-	String callSign;
+	private String callSign;
 	
 	@Column(length = 10, nullable = false)
-	String location;
+	private String location;
 	
 	@ManyToOne
 	@JoinColumn(name = "isbn", nullable = false)
-	Book book;
+	private Book book;
 
 }

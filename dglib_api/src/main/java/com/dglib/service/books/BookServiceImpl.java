@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dglib.dto.BookDto;
 import com.dglib.dto.BookRegistrationDto;
+import com.dglib.dto.BookSummaryDto;
 import com.dglib.dto.LibraryBookDto;
 import com.dglib.entity.Book;
 import com.dglib.entity.LibraryBook;
@@ -46,10 +49,12 @@ public class BookServiceImpl implements BookService {
 		        .collect(Collectors.toList());
 
 		libraryBookRepository.saveAll(libraryBookEntities);
-		
-		
-		
-
+	}
+	
+	@Override
+	public Page<BookSummaryDto> getBookList(Pageable pageable) {
+		Page<Book> books = bookRepository.findAll(pageable);
+		return books.map(book -> modelMapper.map(book, BookSummaryDto.class));
 	}
 	
 	

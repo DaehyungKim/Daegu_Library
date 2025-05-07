@@ -5,13 +5,13 @@ import java.time.LocalDate;
 import lombok.Data;
 
 @Data
-public class BookDto {
+public class BookSummaryDto {
 	private String title;
     private String author;
     private String publisher;
     private LocalDate pubDate;
-    private String isbn;
-    private String description;
     private String cover;
+	private String location;
+    private String callSign;
 
 }

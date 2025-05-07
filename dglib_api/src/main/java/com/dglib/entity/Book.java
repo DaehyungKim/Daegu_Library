@@ -1,5 +1,6 @@
 package com.dglib.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -23,25 +24,25 @@ public class Book {
 	
 	@Id
 	@Column(length = 13)
-	String isbn;  // ISBN 0으로 시작 가능해서 String으로 설정
+	private String isbn;  // ISBN 0으로 시작 가능해서 String으로 설정
 	
 	@Column(nullable = false, length = 150)
-	String title;
+	private String title;
 	
 	@Column(nullable = false, length = 100)
-	String author;
+	private String author;
 	
 	@Column(nullable = false, length = 100)
-	String publisher;
+	private String publisher;
 	
 	@Column(nullable = false)
-	String pubDate;
+	private LocalDate pubDate;
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
-	String description;
+	private String description;
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
-	String cover;
+	private String cover;
 	
 	
 	
