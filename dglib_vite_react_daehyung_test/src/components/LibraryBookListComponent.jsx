@@ -48,14 +48,7 @@ const LibraryBookListComponent = () => {
             );
         }
 
-        const pageClick = async (page) => {
-            if (page === pageable.pageable.pageNumber) return;
-            setIsLoading(true);
-            const response = await getLibraryBookList(page);
-            setBooks(response.content);
-            setPageable(response);
-            setIsLoading(false);
-         }
+
 
 
         return (
@@ -82,6 +75,15 @@ const LibraryBookListComponent = () => {
             </div>
         );
     }
+
+    const pageClick = async (page) => {
+        if (page - 1 === pageable.pageable.pageNumber) return;
+        setIsLoading(true);
+        const response = await getLibraryBookList(page);
+        setBooks(response.content);
+        setPageable(response);
+        setIsLoading(false);
+     }
 
 
 
