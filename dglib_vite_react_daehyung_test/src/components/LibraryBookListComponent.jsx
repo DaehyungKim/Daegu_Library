@@ -1,22 +1,21 @@
 import { getLibraryBookList } from "../api/bookApi";
 import { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 const LibraryBookListComponent = () => {
     const [books, setBooks] = useState([]);
-    const [totalElements, setTotalElements] = useState(0);
+    const [pageable, setPageable] = useState({});
+
     const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         const getbookList = async () => {
+            setIsLoading(true);
             const response = await getLibraryBookList();
-            console.log(response);
             setBooks(response.content);
             setIsLoading(false);
-            console.log(response.totalPages)
-            console.log(response.totalElements)
-            setTotalElements(response.totalElements);
+            setPageable(response);
+            setIsLoading(false);
         }
-
-
         getbookList();
     }, []);
 
@@ -28,24 +27,87 @@ const LibraryBookListComponent = () => {
         );
     }
 
+    const renderPagination = () => {
+        if (!books || !pageable.pageable) return null;
+        const maxPage = 20;
+        const totalPages = Math.min(pageable.totalPages, maxPage);
+        const startPage = Math.floor((pageable.pageable.pageNumber) / 10) * 10 + 1;
+        const endPage = Math.min(startPage + 9, totalPages);
+        const pages = [];
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(
+                <button
+                    key={i}
+                    className={`mx-1 px-3 py-1 rounded ${pageable.pageable.pageNumber === i-1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                    onClick={() => !isLoading && pageClick(i)}
+                    disabled={isLoading}
+                >
+                    {i}
+                </button>
+            );
+        }
+
+        const pageClick = async (page) => {
+            if (page === pageable.pageable.pageNumber) return;
+            setIsLoading(true);
+            const response = await getLibraryBookList(page);
+            setBooks(response.content);
+            setPageable(response);
+            setIsLoading(false);
+         }
+
+
+        return (
+            <div className="flex justify-center mt-4">
+                 {pageable.pageable.pageNumber > 10 && (
+                     <button
+                        key="prev"
+                        onClick={() => !isLoading && pageClick(startPage - 1)}
+                        disabled={isLoading}
+                        className={`mx-1 px-3 py-1 rounded bg-gray-200`}>
+                        이전
+                     </button>
+                 )}
+                 {pages}
+                 {endPage < totalPages && (
+                     <button
+                        key="next"
+                        onClick={() => !isLoading && pageClick(endPage + 1)}
+                        disabled={isLoading}
+                        className={`mx-1 px-3 py-1 rounded bg-gray-200`}>
+                        다음
+                    </button>
+                 )}
+            </div>
+        );
+    }
+
 
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 max-w-3xl">
             <h2 className="text-3xl font-bold mb-8 text-center">도서 목록</h2>
-            <div>총 도서 {totalElements}</div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {books.map((book, index) => (
-                    <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                        <div className="relative h-64">
+            <div className="mb-4">총 도서 {pageable.totalElements}</div>
+            <div className="space-y-6">
+            {books.map((book, index) => {
+                 const libraryBookId = book.libraryBookId;
+
+
+                return (
+                    <Link key={index}
+                        className="flex flex-col md:flex-row bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 gap-6 p-6"
+                        to={`/librarybook/${libraryBookId}`}
+                    >
+                        <div className="w-full md:w-48 flex justify-center">
                             <img
                                 src={book.cover}
                                 alt={book.title}
-                                className="w-full h-full object-contain"
+                                className="h-64 object-contain"
                             />
                         </div>
-                        <div className="p-6">
-                            <h3 className="text-xl font-semibold mb-2 line-clamp-2 h-14">
+                        <div className="flex-1">
+                            <h3 className="text-xl font-semibold mb-4">
                                 {book.title}
                             </h3>
                             <div className="space-y-2 text-gray-600">
@@ -58,11 +120,19 @@ const LibraryBookListComponent = () => {
                                 <p className="text-sm">
                                     <span className="font-medium">출판일:</span> {book.pubDate}
                                 </p>
+                                <p className="text-sm">
+                                    <span className="font-medium">자료위치:</span> {book.location}
+                                </p>
+                                <p className="text-sm">
+                                    <span className="font-medium">청구기호:</span> {book.callSign}
+                                </p>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    </Link>
+                );
+            })}
             </div>
+            {renderPagination()}
         </div>
     );
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.dglib.dto.BookDetailDto;
 import com.dglib.dto.BookDto;
 import com.dglib.dto.BookRegistrationDto;
 import com.dglib.dto.BookSummaryDto;
@@ -101,13 +103,21 @@ public class BookController {
 	
 	@GetMapping("/librarybooklist")
 	public ResponseEntity<Page<BookSummaryDto>> getLibraryBookList(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
-		LOGGER.info("도서관 도서 목록 조회");
-		Pageable pageable = PageRequest.of(page - 1, size);
+		LOGGER.info(page + " ");
+		Pageable pageable = PageRequest.of(page -1, size, Sort.by("libraryBookId").descending());
 		
 		Page<BookSummaryDto> bookSummaryDto = bookService.getBookList(pageable);
 		
 
 		return ResponseEntity.ok(bookSummaryDto);
+	}
+	
+	@GetMapping("/librarybookdetail/{librarybookid}")
+	public ResponseEntity<BookDetailDto> getLibraryBookDetail(@PathVariable("librarybookid") Long libraryBookId) {
+		LOGGER.info("librarybookid: {}", libraryBookId);
+		BookDetailDto bookDetailDto = bookService.getLibraryBookDetail(libraryBookId);
+
+		return ResponseEntity.ok(bookDetailDto);
 	}
 	
 

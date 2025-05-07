@@ -69,8 +69,15 @@ const BookRegComponent = () => {
         libraryBook.callSign &&
         libraryBook.callSign.trim() !== ""
     );
-    if (!isHoldingValid) {
-      alert("소장정보를 모두 입력해주세요.");
+    const isBookDataValid =
+      bookFormData.title &&
+      bookFormData.author &&
+      bookFormData.publisher &&
+      bookFormData.pubDate &&
+      bookFormData.isbn &&
+      bookFormData.description;
+    if (!isBookDataValid || !isHoldingValid) {
+      alert("도서정보를 모두 입력해주세요.");
       return;
     }
     const bookData = {

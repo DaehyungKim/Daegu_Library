@@ -19,7 +19,17 @@ export const regBook = async (bookData) => {
     return res.data;
 }
 
-export const getLibraryBookList = async () => {
-    const res = await axios.get(`${prefix}/librarybooklist`);
+export const getLibraryBookList = async (page = 1, size = 10) => {
+    const res = await axios.get(`${prefix}/librarybooklist`, {
+        params: {
+            page,
+            size
+        }
+    });
+    return res.data;
+}
+
+export const getLibraryBookDetail = async (librarybookid) => {
+    const res = await axios.get(`${prefix}/librarybookdetail/${librarybookid}`);
     return res.data;
 }

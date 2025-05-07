@@ -1,5 +1,6 @@
 package com.dglib.service.books;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.dglib.dto.BookDetailDto;
 import com.dglib.dto.BookDto;
 import com.dglib.dto.BookRegistrationDto;
 import com.dglib.dto.BookSummaryDto;
@@ -53,8 +55,26 @@ public class BookServiceImpl implements BookService {
 	
 	@Override
 	public Page<BookSummaryDto> getBookList(Pageable pageable) {
-		Page<Book> books = bookRepository.findAll(pageable);
-		return books.map(book -> modelMapper.map(book, BookSummaryDto.class));
+		Page<LibraryBook> libraryBooks = libraryBookRepository.findAll(pageable);
+	    return libraryBooks.map(libraryBook -> {
+	        BookSummaryDto dto = new BookSummaryDto();
+	        modelMapper.map(libraryBook.getBook(), dto);
+	        modelMapper.map(libraryBook, dto);
+	        return dto;
+	    });
+		
+		
+	}
+	
+	@Override
+	public BookDetailDto getLibraryBookDetail(Long libraryBookId) {
+		
+		return libraryBookRepository.findById(libraryBookId).map(libraryBook -> {
+			BookDetailDto dto = new BookDetailDto();
+			modelMapper.map(libraryBook.getBook(), dto);
+			modelMapper.map(libraryBook, dto);
+			return dto;
+		}).orElse(null);
 	}
 	
 	
