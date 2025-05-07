@@ -9,6 +9,7 @@ const Search = lazy(() => import("../pages/Search"));
 const BookDetail = lazy(() => import("../pages/BookDetail"));
 const BookReg = lazy(() => import("../pages/BookReg"));
 const SearchBookResult = lazy(() => import("../components/SearchBookResult"));
+const LibraryBookList = lazy(() => import("../pages/LibraryBookList"));
 
 const root = createBrowserRouter([
 
@@ -36,8 +37,12 @@ const root = createBrowserRouter([
     {
         path : "searchbookresult",
         element: <Suspense fallback={Loading}><SearchBookResult /></Suspense>
+    },
+    {
+        path : "librarybooklist",
+        element: <Suspense fallback={Loading}><LibraryBookList /></Suspense>
     }
 
 ])
 
-export default root; 
+export default root;

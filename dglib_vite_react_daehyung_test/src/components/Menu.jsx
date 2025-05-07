@@ -1,9 +1,9 @@
-import { NavLink } from "react-router-dom"; 
+import { NavLink } from "react-router-dom";
 
 const getNavLinkClass = ({ isActive }) => {
     return isActive
-        ? "text-white px-3 py-2 rounded-md text-sm font-medium" 
-        : "text-gray-700 hover:text-blue-200 px-3 py-2 rounded-md text-sm font-medium"; 
+        ? "text-white px-3 py-2 rounded-md text-sm font-medium"
+        : "text-gray-700 hover:text-blue-200 px-3 py-2 rounded-md text-sm font-medium";
 };
 
 const Menu = () => {
@@ -13,6 +13,7 @@ const Menu = () => {
             <li><NavLink to={'/genre'} className={getNavLinkClass}>장르</NavLink></li>
             <li><NavLink to={'/search'} className={getNavLinkClass}>검색</NavLink></li>
             <li><NavLink to={'/bookreg'} className={getNavLinkClass}>도서등록</NavLink></li>
+            <li><NavLink to={'/librarybooklist'} className={getNavLinkClass}>도서목록</NavLink></li>
         </ul>
         </div>
     );

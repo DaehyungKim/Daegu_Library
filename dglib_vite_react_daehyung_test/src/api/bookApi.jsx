@@ -18,3 +18,8 @@ export const regBook = async (bookData) => {
     const res = await axios.post(`${prefix}/regbook`, bookData, { headers: { 'Content-Type': 'application/json' } });
     return res.data;
 }
+
+export const getLibraryBookList = async () => {
+    const res = await axios.get(`${prefix}/librarybooklist`);
+    return res.data;
+}
