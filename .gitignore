@@ -35,7 +35,7 @@ build/
 
 # VS Code
 .vscode/
-
+.metadata/
 # Python
 __pycache__/
 *.py[cod]
