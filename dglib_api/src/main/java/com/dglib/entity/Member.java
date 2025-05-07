@@ -22,14 +22,14 @@ public class Member {
 	@Column(length = 16)
 	private String id;
 	
-	@Column(nullable = false, length = 16)
+	@Column(nullable = false)
 	private String pw;
 	
 	@Column(nullable = false, length = 18)
 	private String name;
 	
 	@Column(nullable = false, length = 10)
-	private int mno;
+	private String mno;
 	
 	@Column(nullable = false, length = 3)
 	private String gender;
@@ -56,7 +56,8 @@ public class Member {
 	private boolean checkTerms;
 	
 	@Column(nullable = false)
-	private int panalty;
+	@Builder.Default
+	private int penalty = 0;
 	
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
