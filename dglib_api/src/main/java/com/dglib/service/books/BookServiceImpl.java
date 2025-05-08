@@ -196,8 +196,11 @@ public class BookServiceImpl implements BookService {
 			ReserveState newState = dto.getState();
 			Integer rank = dto.getReservationRank();
 			if (rank != null && rank > 1) {
-				throw new IllegalStateException("우선 순위가 1이 아닙니다. 대출을 완료할 수 없습니다.");
+				throw new IllegalStateException("예약 우선 순위가 충족되지 않아 대출을 완료할 수 없습니다.");
 			}
+			if (newState == ReserveState.CANCELED) {
+                throw new IllegalStateException("취소된 예약은 대출 완료로 변경할 수 없습니다.");
+            }
 			Reserve reserve = reserveRepository.findById(reserveId)
 		            .orElseThrow(() -> new EntityNotFoundException("해당 예약 ID를 찾을 수 없습니다: " + reserveId));
 			reserve.changeState(ReserveState.BORROWED);

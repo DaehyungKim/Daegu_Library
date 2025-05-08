@@ -61,7 +61,6 @@ export const getReserveBookList = async (page = 1, size = 10) => {
 }
 
 export const cancelReserveBook = async (reserveUpdate) => {
-    console.log(reserveUpdate);
     const payload = reserveUpdate.map(item => ({
         reserveId: item.reserveId,
         state: item.state,
@@ -75,8 +74,12 @@ export const cancelReserveBook = async (reserveUpdate) => {
 
 }
 
-export const reReserveBook = async (reserveIdsToUpdate) => {
-    const payload = { reserveIds : reserveIdsToUpdate };
+export const reReserveBook = async (reserveUpdate) => {
+    const payload = reserveUpdate.map(item => ({
+        reserveId: item.reserveId,
+        state: item.state,
+        reservationRank: item.reservationRank,
+    }));
     const res = await axios.post(`${prefix}/rereservebook`, payload, { headers: { 'Content-Type': 'application/json' } });
     if (res.status !== 200) {
         return res.data;
@@ -84,8 +87,12 @@ export const reReserveBook = async (reserveIdsToUpdate) => {
     return res.data;
 }
 
-export const completeBorrowing = async (reserveIdsToUpdate) => {
-    const payload = { reserveIds : reserveIdsToUpdate };
+export const completeBorrowing = async (reserveUpdate) => {
+    const payload = reserveUpdate.map(item => ({
+        reserveId: item.reserveId,
+        state: item.state,
+        reservationRank: item.reservationRank,
+    }));
     const res = await axios.post(`${prefix}/completeborrowing`, payload, { headers: { 'Content-Type': 'application/json' } });
     if (res.status !== 200) {
         return res.data;
