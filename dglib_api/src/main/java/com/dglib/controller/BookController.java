@@ -157,16 +157,16 @@ public class BookController {
 	}
 	
 	@PostMapping("/rereservebook")
-	public ResponseEntity<String> reReserveBook(@RequestBody ReserveStateChangeDto reserveStateChangeDto) {
-		LOGGER.info("도서 재예약 요청: {}", reserveStateChangeDto);
-		bookService.reReserveBook(reserveStateChangeDto);
+	public ResponseEntity<String> reReserveBook(@RequestBody List<ReserveStateChangeDto> reserveStateChangeDtos) {
+		LOGGER.info("도서 재예약 요청: {}", reserveStateChangeDtos);
+		bookService.reReserveBook(reserveStateChangeDtos);
 		return ResponseEntity.ok("도서 예약이 완료되었습니다.");
 	}
 	
 	@PostMapping("/completeborrowing")
-	public ResponseEntity<String> completeBorrowing(@RequestBody ReserveStateChangeDto reserveStateChangeDto) {
-		LOGGER.info("도서 대출 완료 요청: {}", reserveStateChangeDto);
-		bookService.completeBorrowing(reserveStateChangeDto);
+	public ResponseEntity<String> completeBorrowing(@RequestBody List<ReserveStateChangeDto> reserveStateChangeDtos) {
+		LOGGER.info("도서 대출 완료 요청: {}", reserveStateChangeDtos);
+		bookService.completeBorrowing(reserveStateChangeDtos);
 		return ResponseEntity.ok("도서 대출이 완료되었습니다.");
 	}
 

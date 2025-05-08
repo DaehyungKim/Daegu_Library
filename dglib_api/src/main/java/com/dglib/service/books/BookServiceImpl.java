@@ -176,21 +176,30 @@ public class BookServiceImpl implements BookService {
 	}
 	
 	@Override
-	public void reReserveBook(ReserveStateChangeDto reserveStateChangeDto) {
-		List<Reserve> reserves = reserveRepository.findAllById(reserveStateChangeDto.getReserveId());
-		for (Reserve reserve : reserves) {
-			reserve.changeState(ReserveState.RESERVED);
+	public void reReserveBook(List<ReserveStateChangeDto> reserveStateChangeDtos) {
+		for (ReserveStateChangeDto dto : reserveStateChangeDtos) {
+			Long reserveId = dto.getReserveId();
+			ReserveState newState = dto.getState();
+			Reserve reserve = reserveRepository.findById(reserveId)
+		            .orElseThrow(() -> new EntityNotFoundException("해당 예약 ID를 찾을 수 없습니다: " + reserveId));
+			reserve.changeState(ReserveState.RESERVED);		
 		}
+		
+		
 
 	}
 	
 	@Override
-	public void completeBorrowing(ReserveStateChangeDto reserveStateChangeDto) {
-		List<Reserve> reserves = reserveRepository.findAllById(reserveStateChangeDto.getReserveId());
-		if (reserveStateChangeDto.getReservationRank() != 1) {
-			throw new IllegalArgumentException("우선순위가 올바르지 않습니다.");
-		}
-		for (Reserve reserve : reserves) {
+	public void completeBorrowing(List<ReserveStateChangeDto> reserveStateChangeDtos) {
+		for (ReserveStateChangeDto dto : reserveStateChangeDtos) {
+			Long reserveId = dto.getReserveId();
+			ReserveState newState = dto.getState();
+			Integer rank = dto.getReservationRank();
+			if (rank != null && rank > 1) {
+				throw new IllegalStateException("우선 순위가 1이 아닙니다. 대출을 완료할 수 없습니다.");
+			}
+			Reserve reserve = reserveRepository.findById(reserveId)
+		            .orElseThrow(() -> new EntityNotFoundException("해당 예약 ID를 찾을 수 없습니다: " + reserveId));
 			reserve.changeState(ReserveState.BORROWED);
 			Rental rental = new Rental();
 			rental.setLibraryBook(reserve.getLibraryBook());
@@ -200,9 +209,5 @@ public class BookServiceImpl implements BookService {
 			rental.setState(RentalState.BORROWED);
 			rentalRepository.save(rental);
 		}
-
-	}
-		
-	
-
+	}	
 }
