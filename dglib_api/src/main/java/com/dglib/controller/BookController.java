@@ -29,7 +29,10 @@ import com.dglib.dto.BookDto;
 import com.dglib.dto.BookRegistrationDto;
 import com.dglib.dto.BookSummaryDto;
 import com.dglib.dto.LibraryBookDto;
-import com.dglib.dto.RentalDto;
+import com.dglib.dto.RentalBookListDto;
+import com.dglib.dto.ReserveBookDto;
+import com.dglib.dto.ReserveBookListDto;
+import com.dglib.dto.ReserveStateChangeDto;
 import com.dglib.repository.BookRepository;
 import com.dglib.repository.LibraryBookRepository;
 import com.dglib.service.books.BookService;
@@ -122,14 +125,50 @@ public class BookController {
 	}
 	
 	@GetMapping("/rentallist")
-	public ResponseEntity<Page<RentalDto>> getRentalList(@RequestParam(defaultValue = "1") int page,
+	public ResponseEntity<Page<RentalBookListDto>> getRentalList(@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "10") int size) {
 		LOGGER.info(page + " ");
 		Pageable pageable = PageRequest.of(page - 1, size, Sort.by("rentStartDate").descending());
-		Page<RentalDto> rentalList = bookService.getRentalList(pageable);
+		Page<RentalBookListDto> rentalList = bookService.getRentalList(pageable);
 		LOGGER.info("rentalList: {}", rentalList);
 		return ResponseEntity.ok(rentalList);
 	}
 	
+	@PostMapping("/reservebook")
+	public ResponseEntity<String> reserveBook(@RequestBody ReserveBookDto reserveDto) {
+		bookService.reserveBook(reserveDto.getLibraryBookId(), reserveDto.getId());
+		return ResponseEntity.ok("도서 예약이 완료되었습니다.");
+	}
+	
+	@GetMapping("/reservebooklist")
+	public ResponseEntity<Page<ReserveBookListDto>> reserveBookList(@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int size) {
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by("reserveDate").ascending());
+		Page<ReserveBookListDto> reserveList = bookService.getReserveList(pageable);
+		LOGGER.info("reserveList: {}", reserveList);
+		return ResponseEntity.ok(reserveList);
+	}
+	
+	@PostMapping("/cancelreservebook")
+	public ResponseEntity<String> cancelReserveBook(@RequestBody List<ReserveStateChangeDto> reserveStateChangeDtos) {
+        LOGGER.info("도서 예약 취소 요청: {}", reserveStateChangeDtos);
+        bookService.cancelReserveBook(reserveStateChangeDtos);
+        return ResponseEntity.ok("도서 예약이 취소되었습니다.");
+	}
+	
+	@PostMapping("/rereservebook")
+	public ResponseEntity<String> reReserveBook(@RequestBody ReserveStateChangeDto reserveStateChangeDto) {
+		LOGGER.info("도서 재예약 요청: {}", reserveStateChangeDto);
+		bookService.reReserveBook(reserveStateChangeDto);
+		return ResponseEntity.ok("도서 예약이 완료되었습니다.");
+	}
+	
+	@PostMapping("/completeborrowing")
+	public ResponseEntity<String> completeBorrowing(@RequestBody ReserveStateChangeDto reserveStateChangeDto) {
+		LOGGER.info("도서 대출 완료 요청: {}", reserveStateChangeDto);
+		bookService.completeBorrowing(reserveStateChangeDto);
+		return ResponseEntity.ok("도서 대출이 완료되었습니다.");
+	}
 
 }
+	

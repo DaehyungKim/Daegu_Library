@@ -12,6 +12,7 @@ const SearchBookResult = lazy(() => import("../components/SearchBookResult"));
 const LibraryBookList = lazy(() => import("../pages/LibraryBookList"));
 const LibraryBook = lazy(() => import("../pages/LibraryBook"));
 const RentList = lazy(() => import("../pages/RentList"));
+const ReserveList = lazy(() => import("../pages/ReserveList"));
 
 const root = createBrowserRouter([
 
@@ -53,7 +54,12 @@ const root = createBrowserRouter([
         path : "rentlist",
         element: <Suspense fallback={Loading}><RentList /></Suspense>
 
-    }
+    },
+    {
+        path : "reserve",
+        element: <Suspense fallback={Loading}><ReserveList /></Suspense>
+
+    },
 
 ])
 

@@ -2,9 +2,13 @@ package com.dglib.dto;
 
 import java.time.LocalDate;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookSummaryDto {
 	private String bookTitle;
     private String author;
@@ -15,6 +19,6 @@ public class BookSummaryDto {
     private String callSign;
     private String isbn;
     private Long libraryBookId;
-    
+    private boolean isRented;
 
 }

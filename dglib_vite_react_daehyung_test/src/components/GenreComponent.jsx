@@ -10,7 +10,7 @@ const GenreComponent = () => {
     const { isLoading, isFetching, data, isError } = useQuery({
         queryKey: ['bookreco', genre ?? defaultGenre],
         queryFn: () => getBookreco(genre ?? defaultGenre),
-        staleTime: Infinity,
+        staleTime:Infinity,
         refetchOnWindowFocus: false
     })
 

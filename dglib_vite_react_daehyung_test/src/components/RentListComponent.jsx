@@ -7,7 +7,7 @@ const RentListComponent = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-            const getbookList = async () => {
+            const getRental = async () => {
                 setIsLoading(true);
                 const response = await getRentalList();
                 setRentalList(response.content);
@@ -15,7 +15,7 @@ const RentListComponent = () => {
                 console.log("대여 목록:", response);
                 setIsLoading(false);
             }
-            getbookList();
+            getRental();
         }, []);
     const pageClick = async (page) => {
         if (page - 1 === pageable.pageable.pageNumber) return;

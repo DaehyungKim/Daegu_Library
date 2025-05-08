@@ -8,14 +8,15 @@ const LibraryBookListComponent = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const getbookList = async () => {
+        const getBookList = async () => {
             setIsLoading(true);
             const response = await getLibraryBookList();
             setBooks(response.content);
             setPageable(response);
             setIsLoading(false);
+            console.log(response.content);
         }
-        getbookList();
+        getBookList();
     }, []);
 
     if (isLoading) {
@@ -131,6 +132,9 @@ const LibraryBookListComponent = () => {
                                 </p>
                                 <p className="text-sm">
                                     <span className="font-medium">청구기호:</span> {book.callSign}
+                                </p>
+                                <p className="text-sm">
+                                    <span className="font-medium">도서상태:</span> {book.rented ? "대출중" : "대출가능"}
                                 </p>
                             </div>
                         </div>

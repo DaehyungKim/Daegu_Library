@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class BookDetailDto {
+	private String libraryBookId;
 	private String bookTitle;
     private String author;
     private String publisher;
@@ -15,5 +16,8 @@ public class BookDetailDto {
     private String callSign;
     private String isbn;
     private String description;
+    private boolean isRented;
+    private boolean alreadyReservedByMember;
+    private int reserveCount; 
 
 }
