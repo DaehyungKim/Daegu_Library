@@ -2,7 +2,7 @@ import Layout from "../layouts"
 
 const MainPage = () => {
     return (
-        <Layout>
+        <Layout sideOn={false}>
         <div>Main Page</div>
         </Layout>
     )
