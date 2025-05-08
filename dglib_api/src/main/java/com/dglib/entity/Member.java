@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class Member {
 	@Id
 	@Column(length = 16)
-	private String id;
+	private String mid;
 	
 	@Column(nullable = false)
 	private String pw;

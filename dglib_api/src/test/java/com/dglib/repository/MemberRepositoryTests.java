@@ -29,7 +29,7 @@ private PasswordEncoder passwordEncoder;
 @Test
 public void insertMember() {
 	Member member1 = Member.builder()
-			.id("user1")
+			.mid("user1")
 			.pw(passwordEncoder.encode("1111"))
 			.name("홍길동")
 			.email("user1@test.com")
@@ -48,7 +48,7 @@ public void insertMember() {
 	memberRepository.save(member1);
 	
 	Member member2 = Member.builder()
-			.id("user2")
+			.mid("user2")
 			.pw(passwordEncoder.encode("1111"))
 			.name("안유진")
 			.email("user2@test.com")
@@ -73,7 +73,7 @@ public void insertMember() {
 @Disabled
 public void insertMember2() {
 	Member member3 = Member.builder()
-			.id("user3")
+			.mid("user3")
 			.pw(passwordEncoder.encode("1111"))
 			.name("김유신")
 			.email("user3@test.com")
