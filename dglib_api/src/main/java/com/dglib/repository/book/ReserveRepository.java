@@ -21,7 +21,7 @@ import com.dglib.entity.book.ReserveState;
 
 public interface ReserveRepository extends JpaRepository<Reserve, Long>{
 	int countByLibraryBookLibraryBookIdAndState(Long libraryBookId, ReserveState state);
-	boolean existsByLibraryBookLibraryBookIdAndMemberIdAndState(Long libraryBookId, String id, ReserveState state);
+	boolean existsByLibraryBookLibraryBookIdAndMemberMidAndState(Long libraryBookId, String id, ReserveState state);
 	
 	@EntityGraph(attributePaths = {"libraryBook", "libraryBook.book", "member"})
 	Page<Reserve> findAll(Pageable pageable);
@@ -40,9 +40,9 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long>{
 	List<ReservationCountDTO> findReservationCounts(Collection<Long> libraryBookIds, ReserveState state);
 	
 	@EntityGraph(attributePaths = {"member", "libraryBook"})
-	List<Reserve> findByMemberIdInAndStateAndLibraryBookLibraryBookIdIn(Set<String> memberIds, ReserveState state, Set<Long> libraryBookLibraryIds);
+	List<Reserve> findByMemberMidInAndStateAndLibraryBookLibraryBookIdIn(Set<String> memberIds, ReserveState state, Set<Long> libraryBookLibraryIds);
 	
 	@EntityGraph(attributePaths = "member")
-	List<Reserve> findByMemberIdInAndState(Collection<String> memberIds, ReserveState state);
+	List<Reserve> findByMemberMidInAndState(Collection<String> memberIds, ReserveState state);
 	
 }

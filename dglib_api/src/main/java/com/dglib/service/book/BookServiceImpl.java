@@ -97,7 +97,7 @@ public class BookServiceImpl implements BookService {
 	            libraryBookId, RentalState.RETURNED);
 		int reserveCount = reserveRepository.countByLibraryBookLibraryBookIdAndState(
 	            libraryBookId, ReserveState.RESERVED);
-		boolean alreadyReservedByMember = reserveRepository.existsByLibraryBookLibraryBookIdAndMemberIdAndState(
+		boolean alreadyReservedByMember = reserveRepository.existsByLibraryBookLibraryBookIdAndMemberMidAndState(
 	            libraryBookId, id, ReserveState.RESERVED);
 		 dto.setRented(isRented);
 		 dto.setReserveCount(reserveCount);
@@ -229,27 +229,27 @@ public class BookServiceImpl implements BookService {
 	    }
 	    
 	    Set<String> memberIds = reserveStateChangeDtos.stream()
-	        .map(ReserveStateChangeDTO::getId)
+	        .map(ReserveStateChangeDTO::getMid)
 	        .collect(Collectors.toSet());
 	    
 	    Map<String, Long> currentDbReservedCounts = new HashMap<>();
         Map<String, Long> currentDbBorrowedCounts = new HashMap<>();
         
-        List<Reserve> currentMemberReservations = reserveRepository.findByMemberIdInAndState(
+        List<Reserve> currentMemberReservations = reserveRepository.findByMemberMidInAndState(
                 new ArrayList<>(memberIds), ReserveState.RESERVED
             );
         currentDbReservedCounts = currentMemberReservations.stream()
-                .collect(Collectors.groupingBy(r -> r.getMember().getId(), Collectors.counting()));
+                .collect(Collectors.groupingBy(r -> r.getMember().getMid(), Collectors.counting()));
         
-        List<Rental> currentMemberRentals = rentalRepository.findByMemberIdInAndState(
+        List<Rental> currentMemberRentals = rentalRepository.findByMemberMidInAndState(
                 new ArrayList<>(memberIds), RentalState.BORROWED
             );
         
         currentDbBorrowedCounts = currentMemberRentals.stream()
-                .collect(Collectors.groupingBy(rt -> rt.getMember().getId(), Collectors.counting()));
+                .collect(Collectors.groupingBy(rt -> rt.getMember().getMid(), Collectors.counting()));
         
         Map<String, Long> newReservationsPerMember = reserveStateChangeDtos.stream()
-                .collect(Collectors.groupingBy(ReserveStateChangeDTO::getId, Collectors.counting()));
+                .collect(Collectors.groupingBy(ReserveStateChangeDTO::getMid, Collectors.counting()));
         
         for (String memberId : memberIds) {
             long reservedCount = currentDbReservedCounts.getOrDefault(memberId, 0L);
@@ -271,12 +271,12 @@ public class BookServiceImpl implements BookService {
 	    Map<Long, List<ReserveStateChangeDTO>> bookReservations = reserveStateChangeDtos.stream()
 	        .collect(Collectors.groupingBy(ReserveStateChangeDTO::getLibraryBookId));
 	    Set<Long> libraryBookIds = bookReservations.keySet();
-	    List<Reserve> existingReservations = reserveRepository.findByMemberIdInAndStateAndLibraryBookLibraryBookIdIn(
+	    List<Reserve> existingReservations = reserveRepository.findByMemberMidInAndStateAndLibraryBookLibraryBookIdIn(
 	        memberIds, ReserveState.RESERVED, libraryBookIds);
 	    Map<String, Set<Long>> memberReservedBooks = new HashMap<>();
 	    
 	    for (Reserve reserve : existingReservations) {
-	        String memberId = reserve.getMember().getId();
+	        String memberId = reserve.getMember().getMid();
 	        Long libraryBookId = reserve.getLibraryBook().getLibraryBookId();
 
 	        memberReservedBooks.computeIfAbsent(memberId, k -> new HashSet<>())
@@ -286,7 +286,7 @@ public class BookServiceImpl implements BookService {
 	    
 	    Map<String, Set<Long>> requestedMemberBooks = new HashMap<>();
 	    for (ReserveStateChangeDTO dto : reserveStateChangeDtos) {
-	        String memberId = dto.getId();
+	        String memberId = dto.getMid();
 	        Long libraryBookId = dto.getLibraryBookId();
 	        
 	        if (requestedMemberBooks.containsKey(memberId) && 

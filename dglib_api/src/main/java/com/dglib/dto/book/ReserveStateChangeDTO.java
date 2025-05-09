@@ -12,7 +12,7 @@ public class ReserveStateChangeDTO {
 	private Integer reservationRank;
 	private ReserveState state;
 	private Long libraryBookId;
-	private String id;
+	private String mid;
 
 
 }

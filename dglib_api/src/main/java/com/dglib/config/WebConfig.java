@@ -5,7 +5,6 @@ package com.dglib.config;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -16,8 +15,10 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -63,7 +64,13 @@ public class WebConfig implements WebMvcConfigurer {
 	        };
 	 }
 
-	
 
+    
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+
+    return new BCryptPasswordEncoder();
+
+    }
 
 }

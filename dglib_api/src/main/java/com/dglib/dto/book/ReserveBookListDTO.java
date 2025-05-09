@@ -16,7 +16,7 @@ public class ReserveBookListDTO {
 	private LocalDateTime reserveDate;
 	private boolean isUnmanned;
 	private ReserveState state;
-	private String id;
+	private String mid;
 	private String bookTitle;
 	private String libraryBookId;
 	private String author;

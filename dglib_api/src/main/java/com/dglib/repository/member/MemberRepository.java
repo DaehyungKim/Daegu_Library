@@ -28,5 +28,8 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 	Page<MemberSeaerchByMnoDTO> findByMno(String mno, Pageable pageable);
 	
 	Optional<Member> findByMno(String mno);
+	
+	Long countByMnoLike(String mno);
+
 
 }

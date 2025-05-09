@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ReserveBookDTO {
 	
-	private String id;
+	private String mid;
 	private Long libraryBookId;
 
 }

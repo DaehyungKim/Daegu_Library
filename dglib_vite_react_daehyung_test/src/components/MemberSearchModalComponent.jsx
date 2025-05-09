@@ -87,7 +87,7 @@ const MemberSerachModalComponent = () => {
                     >
                       <td className="py-3 px-4">{member.mno}</td>
                       <td className="py-3 px-4 font-medium">{member.name}</td>
-                      <td className="py-3 px-4">{member.id}</td>
+                      <td className="py-3 px-4">{member.mid}</td>
                       <td className="py-3 px-4">{member.birthDate}</td>
                       <td className="py-3 px-4">{member.gender}</td>
                       <td className="py-3 px-4">{member.phone}</td>

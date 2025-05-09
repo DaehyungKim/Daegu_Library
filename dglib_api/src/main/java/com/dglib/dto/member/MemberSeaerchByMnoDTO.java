@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberSeaerchByMnoDTO {
 	
-	private String id;
+	private String mid;
 	private String name;
 	private String mno;
 	private String gender;

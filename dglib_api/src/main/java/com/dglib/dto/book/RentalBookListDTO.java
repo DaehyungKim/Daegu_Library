@@ -17,7 +17,7 @@ public class RentalBookListDTO {
 	private LocalDate returnDate;
 	private boolean isUnmanned;
 	private RentalState state;
-	private String id;
+	private String mid;
 	private String bookTitle;
 	private String author;
 	private String isbn;

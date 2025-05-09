@@ -34,6 +34,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findAllByIdInWithDetails(List<Long> ids);
 	
 	@EntityGraph(attributePaths = "member")
-	List<Rental> findByMemberIdInAndState(Collection<String> memberIds, RentalState state);
+	List<Rental> findByMemberMidInAndState(Collection<String> memberIds, RentalState state);
 
 }

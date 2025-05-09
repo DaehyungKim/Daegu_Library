@@ -209,7 +209,7 @@ const RentListComponent = () => {
                                                     onChange={(e) => handleSelectItem(e, item)} />
 
                                         </td>
-                                        <td className="py-4 px-6">{item.id}</td>
+                                        <td className="py-4 px-6">{item.mid}</td>
                                         <td className="py-4 px-6">{item.bookTitle}</td>
                                         <td className="py-4 px-6">{item.author}</td>
                                         <td className="py-4 px-6 whitespace-nowrap">{item.isbn}</td>

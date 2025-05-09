@@ -25,14 +25,15 @@ import lombok.NoArgsConstructor;
 public class Member {
 	@Id
 	@Column(length = 16)
-	private String id;
+	private String mid;
 	
-	@Column(nullable = false, length = 16)
+	@Column(nullable = false)
 	private String pw;
 	
 	@Column(nullable = false, length = 18)
 	private String name;
 	
+
 	@Column(nullable = false, length = 10, unique = true)
 	private String mno;
 	
@@ -60,8 +61,10 @@ public class Member {
 	@Column(nullable = false)
 	private boolean checkTerms;
 	
+
 	@Column(nullable = true)
 	private LocalDate panalty;
+
 	
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)

@@ -66,7 +66,7 @@ export const cancelReserveBook = async (reserveUpdate) => {
         state: item.state,
         reservationRank: item.reservationRank,
         libraryBookId: item.libraryBookId,
-        id: item.id,
+        mid: item.mid,
     }));
     const res = await axios.post(`${prefix}/cancelreservebook`, payload, { headers: { 'Content-Type': 'application/json' } });
     if (res.status !== 200) {
@@ -82,7 +82,7 @@ export const reReserveBook = async (reserveUpdate) => {
         state: item.state,
         reservationRank: item.reservationRank,
         libraryBookId: item.libraryBookId,
-        id: item.id,
+        mid: item.mid,
     }));
     console.log("reReserveBook payload", payload);
     const res = await axios.post(`${prefix}/rereservebook`, payload, { headers: { 'Content-Type': 'application/json' } });
@@ -98,7 +98,7 @@ export const completeBorrowing = async (reserveUpdate) => {
         state: item.state,
         reservationRank: item.reservationRank,
         libraryBookId: item.libraryBookId,
-        id: item.id,
+        mid: item.mid,
     }));
     const res = await axios.post(`${prefix}/completeborrowing`, payload, { headers: { 'Content-Type': 'application/json' } });
     if (res.status !== 200) {
