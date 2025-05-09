@@ -14,6 +14,7 @@ const Menu = () => {
             <li><NavLink to={'/search'} className={getNavLinkClass}>검색</NavLink></li>
             <li><NavLink to={'/bookreg'} className={getNavLinkClass}>도서등록</NavLink></li>
             <li><NavLink to={'/librarybooklist'} className={getNavLinkClass}>도서목록</NavLink></li>
+            <li><NavLink to={'/rentbook'} className={getNavLinkClass}>도서대출</NavLink></li>
             <li><NavLink to={'/rentlist'} className={getNavLinkClass}>대출목록</NavLink></li>
             <li><NavLink to={'/reserve'} className={getNavLinkClass}>예약목록</NavLink></li>
         </ul>

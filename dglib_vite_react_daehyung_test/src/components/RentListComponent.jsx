@@ -1,10 +1,12 @@
-import { getRentalList } from "../api/bookApi";
+import { getRentalList, returnBook } from "../api/bookApi";
 import { useState, useEffect } from "react";
 
 const RentListComponent = () => {
     const [rentalList, setRentalList] = useState([]);
     const [pageable, setPageable] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedItems, setSelectedItems] = useState(new Set());
+    const [isAllSelected, setIsAllSelected] = useState(false);
 
     useEffect(() => {
             const getRental = async () => {
@@ -17,6 +19,121 @@ const RentListComponent = () => {
             }
             getRental();
         }, []);
+    useEffect(() => {
+        if (rentalList.length > 0 && selectedItems.size === rentalList.length) {
+            setIsAllSelected(true);
+        } else {
+            setIsAllSelected(false);
+        }
+
+    }, [rentalList, selectedItems])
+    useEffect(() => {
+        setSelectedItems(new Set());
+        setIsAllSelected(false);
+    }, [pageable.pageable?.pageNumber]);
+    const handleSelectAll = (e) => {
+        const isChecked = e.target.checked;
+        setIsAllSelected(isChecked);
+        if (isChecked) {
+            const newSelectedItems = new Set();
+            rentalList.forEach(item => {
+            newSelectedItems.add(item.rentId);
+        });
+        setSelectedItems(newSelectedItems);
+        } else {
+        setSelectedItems(new Set());
+        }
+    }
+    const handleSelectItem = (e, item) => {
+        const isChecked = e.target.checked;
+        setSelectedItems(prev => {
+            const newSelectedItems = new Set(prev);
+            if (isChecked) {
+                newSelectedItems.add(item.rentId);
+            } else {
+                newSelectedItems.delete(item.rentId);
+            }
+            return newSelectedItems;
+        });
+    }
+
+    const buttonClick = async () => {
+        if (selectedItems.size === 0) {
+            alert("반납할 도서를 선택하세요.");
+            return;
+        }
+        setIsLoading(true);
+        try {
+            if (confirm("정말로 도서를 반납하시겠습니까?")) {
+                console.log('selectedItems:', selectedItems);
+                console.log('converted:', Array.from(selectedItems));
+                await returnBook(Array.from(selectedItems));
+                alert("도서 반납이 완료되었습니다.")
+            }
+        } catch (error) {
+            console.log("예약 변경 오류:", error);
+            alert(error.response.data.message);
+        }
+        const updatedListResponse = await getRentalList();
+        setRentalList(updatedListResponse.content);
+        setPageable(updatedListResponse);
+        setSelectedItems(new Set());
+        setIsAllSelected(false);
+        setIsLoading(false);
+
+
+
+    }
+
+    const renderPagination = () => {
+        if (!rentalList || !pageable.pageable) return null;
+        const maxPage = 20;
+        const totalPages = Math.min(pageable.totalPages, maxPage);
+        const startPage = Math.floor((pageable.pageable.pageNumber) / 10) * 10 + 1;
+        const endPage = Math.min(startPage + 9, totalPages);
+        const pages = [];
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(
+                <button
+                    key={i}
+                    className={`mx-1 px-3 py-1 rounded ${pageable.pageable.pageNumber === i-1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                    onClick={() => !isLoading && pageClick(i)}
+                    disabled={isLoading}
+                >
+                    {i}
+                </button>
+            );
+        }
+
+
+
+
+        return (
+            <div className="flex justify-center mt-4">
+                 {pageable.pageable.pageNumber > 10 && (
+                     <button
+                        key="prev"
+                        onClick={() => !isLoading && pageClick(startPage - 1)}
+                        disabled={isLoading}
+                        className={`mx-1 px-3 py-1 rounded bg-gray-200`}>
+                        이전
+                     </button>
+                 )}
+                 {pages}
+                 {endPage < totalPages && (
+                     <button
+                        key="next"
+                        onClick={() => !isLoading && pageClick(endPage + 1)}
+                        disabled={isLoading}
+                        className={`mx-1 px-3 py-1 rounded bg-gray-200`}>
+                        다음
+                    </button>
+                 )}
+            </div>
+        );
+    }
+
     const pageClick = async (page) => {
         if (page - 1 === pageable.pageable.pageNumber) return;
         setIsLoading(true);
@@ -48,6 +165,14 @@ const RentListComponent = () => {
                 <table className="min-w-full bg-white">
                     <thead className="bg-blue-500 text-white">
                         <tr>
+                            <th className="py-3 px-4 text-left">
+                                <input type="checkbox"
+                                       className="form-checkbox h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                       checked={isAllSelected}
+                                       onChange={handleSelectAll}
+                                       disabled={rentalList.length === 0}
+                                       />
+                            </th>
                             <th className="py-3 px-6 text-left text-sm font-semibold uppercase">회원ID</th>
                             <th className="py-3 px-6 text-left text-sm font-semibold uppercase">도서명</th>
                             <th className="py-3 px-6 text-left text-sm font-semibold uppercase">저자</th>
@@ -77,6 +202,13 @@ const RentListComponent = () => {
 
                                 return (
                                     <tr key={index} className={`border-b border-gray-200 hover:bg-gray-100 transition-colors duration-200 ${isOverdue ? 'bg-red-50' : ''}`}>
+                                        <td className="py-4 px-4">
+                                            <input type="checkbox"
+                                                    className="form=checkbox h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                                    checked={selectedItems.has(item.rentId)}
+                                                    onChange={(e) => handleSelectItem(e, item)} />
+
+                                        </td>
                                         <td className="py-4 px-6">{item.id}</td>
                                         <td className="py-4 px-6">{item.bookTitle}</td>
                                         <td className="py-4 px-6">{item.author}</td>
@@ -89,7 +221,7 @@ const RentListComponent = () => {
                                                 item.state === "BORROWED" ? (isOverdue ? "bg-red-200 text-red-800" : "bg-yellow-200 text-yellow-800") :
                                                 item.state === "RETURNED" ? "bg-green-200 text-green-800" : "bg-gray-200 text-gray-800"
                                             }`}>
-                                                {item.state === "BORROWED" ?  "대여중" : "반납완료"}
+                                                {item.state === "BORROWED" ?  "대출중" : "반납완료"}
                                             </span>
                                         </td>
                                         <td className="py-4 px-6 whitespace-nowrap">
@@ -106,6 +238,15 @@ const RentListComponent = () => {
                     </tbody>
                 </table>
             </div>
+            <div className="mt-6 flex justify-end items-center space-x-3">
+                <button
+                    onClick={buttonClick}
+                    className="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                >
+                    도서반납
+                </button>
+            </div>
+            {renderPagination()}
         </div>
     );
 }

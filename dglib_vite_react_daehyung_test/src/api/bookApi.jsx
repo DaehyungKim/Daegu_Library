@@ -65,6 +65,8 @@ export const cancelReserveBook = async (reserveUpdate) => {
         reserveId: item.reserveId,
         state: item.state,
         reservationRank: item.reservationRank,
+        libraryBookId: item.libraryBookId,
+        id: item.id,
     }));
     const res = await axios.post(`${prefix}/cancelreservebook`, payload, { headers: { 'Content-Type': 'application/json' } });
     if (res.status !== 200) {
@@ -79,7 +81,10 @@ export const reReserveBook = async (reserveUpdate) => {
         reserveId: item.reserveId,
         state: item.state,
         reservationRank: item.reservationRank,
+        libraryBookId: item.libraryBookId,
+        id: item.id,
     }));
+    console.log("reReserveBook payload", payload);
     const res = await axios.post(`${prefix}/rereservebook`, payload, { headers: { 'Content-Type': 'application/json' } });
     if (res.status !== 200) {
         return res.data;
@@ -92,6 +97,8 @@ export const completeBorrowing = async (reserveUpdate) => {
         reserveId: item.reserveId,
         state: item.state,
         reservationRank: item.reservationRank,
+        libraryBookId: item.libraryBookId,
+        id: item.id,
     }));
     const res = await axios.post(`${prefix}/completeborrowing`, payload, { headers: { 'Content-Type': 'application/json' } });
     if (res.status !== 200) {
@@ -99,3 +106,26 @@ export const completeBorrowing = async (reserveUpdate) => {
     }
     return res.data;
 }
+
+export const returnBook = async (returnData) => {
+
+    const payload = returnData.map(rentId => ({rentId}));
+    console.log(payload);
+    const res = await axios.post(`${prefix}/returnbook`, payload, { headers: { 'Content-Type': 'application/json' } });
+    if (res.status !== 200) {
+        return res.data;
+    }
+    return res.data;
+}
+
+export const searchLibraryBookbyLibraryBookId = async (libraryBookId) => {
+    const res = await axios.get(`${prefix}/searchlibrarybook/${libraryBookId}`);
+    return res.data;
+}
+
+export const rentBook = async (rentData) => {
+    const res = await axios.post(`${prefix}/rentbook`, rentData, { headers: { 'Content-Type': 'application/json' } });
+    return res.data;
+}
+
+

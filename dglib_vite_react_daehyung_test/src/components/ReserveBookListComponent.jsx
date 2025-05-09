@@ -44,7 +44,10 @@ const ReserveBookListComponent = () => {
                 newSelectedItems.set(item.reserveId, {
                     reserveId: item.reserveId,
                     state: item.state,
-                    reservationRank: item.reservationRank
+                    reservationRank: item.reservationRank,
+                    libraryBookId: item.libraryBookId,
+                    id: item.id,
+
                 });
             }
         });
@@ -61,7 +64,9 @@ const ReserveBookListComponent = () => {
                 newSelectedItems.set(item.reserveId, {
                     reserveId: item.reserveId,
                     state: item.state,
-                    reservationRank: item.reservationRank
+                    reservationRank: item.reservationRank,
+                    libraryBookId: item.libraryBookId,
+                    id: item.id,
                 });
             } else {
                 newSelectedItems.delete(item.reserveId);
@@ -75,22 +80,22 @@ const ReserveBookListComponent = () => {
             alert("변경할 예약을 선택하세요.");
             return;
         }
-        const reserveUpdate = Array.from(selectedItems.values());
         setIsLoading(true);
         try {
             switch (selectedAction) {
                 case "CANCELED":
-                    await cancelReserveBook(reserveUpdate);
+                    await cancelReserveBook(Array.from(selectedItems.values()));
                     alert("예약이 취소되었습니다.");
                     break;
                 case "RESERVED":
-                    await reReserveBook(reserveUpdate);
+                    await reReserveBook(Array.from(selectedItems.values()));
                     alert("예약이 완료되었습니다.");
                     break;
                 case "BORROWED":
-                    await completeBorrowing(reserveUpdate);
-                    alert("대출이 완료되었습니다.");
-                    break;
+                    if (confirm("정말로 대출을 완료하시겠습니까?")) {
+                        await completeBorrowing(Array.from(selectedItems.values()));
+                        alert("대출이 완료되었습니다.");
+                    }
             }
 
         } catch (error) {
@@ -176,7 +181,7 @@ const ReserveBookListComponent = () => {
                                                 item.state === "BORROWED" ? "bg-green-200 text-green-800" : "bg-gray-200 text-gray-800"
 
                                             }`}>
-                                                {item.state === "RESERVED" ?  "예약중" : item.state === "BORROWED" ? "대출중" : "예약취소"}
+                                                {item.state === "RESERVED" ?  "예약중" : item.state === "BORROWED" ? "대출완료" : "예약취소"}
                                             </span>
                                         </td>
 

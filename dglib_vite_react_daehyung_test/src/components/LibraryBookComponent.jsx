@@ -36,10 +36,16 @@ const LibraryBookComponent = () => {
             libraryBookId: libraryBookDetail.libraryBookId,
         };
         setIsLoading(true);
-        const response = await reserveBook(reservationData);
-        const updatedBookDetails = await getLibraryBookDetail(isbn);
-        setLibraryBookDetail(updatedBookDetails)
-        alert(`'${libraryBookDetail.bookTitle}' 도서를 예약했습니다.`);
+        try {
+            const response = await reserveBook(reservationData);
+            const updatedBookDetails = await getLibraryBookDetail(isbn);
+            setLibraryBookDetail(updatedBookDetails)
+            alert(`'${libraryBookDetail.bookTitle}' 도서를 예약했습니다.`);
+        } catch (error) {
+            console.log("예약 변경 오류:", error);
+            alert(error.response.data.message);
+        }
+
         setIsLoading(false);
     };
 

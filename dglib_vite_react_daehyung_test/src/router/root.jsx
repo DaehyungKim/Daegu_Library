@@ -13,6 +13,9 @@ const LibraryBookList = lazy(() => import("../pages/LibraryBookList"));
 const LibraryBook = lazy(() => import("../pages/LibraryBook"));
 const RentList = lazy(() => import("../pages/RentList"));
 const ReserveList = lazy(() => import("../pages/ReserveList"));
+const RentBook = lazy(() => import("../pages/RentBook"));
+const MemberSearchModal = lazy(() => import("../components/MemberSearchModalComponent"));
+const LibraryBookSearchModal = lazy(() => import("../components/LibraryBookSearchModalComponent"));
 
 const root = createBrowserRouter([
 
@@ -60,6 +63,18 @@ const root = createBrowserRouter([
         element: <Suspense fallback={Loading}><ReserveList /></Suspense>
 
     },
+    {
+        path : "rentbook",
+        element: <Suspense fallback={Loading}><RentBook /></Suspense>
+    },
+    {
+        path: "membersearchmodal",
+        element: <Suspense fallback={Loading}><MemberSearchModal /></Suspense>
+    },
+    {
+        path: "librarybooksearchmodal",
+        element: <Suspense fallback={Loading}><LibraryBookSearchModal /></Suspense>
+    }
 
 ])
 
