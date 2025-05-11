@@ -140,7 +140,7 @@ public class BookController {
 	
 	@PostMapping("/reservebook")
 	public ResponseEntity<String> reserveBook(@RequestBody ReserveBookDTO reserveDto) {
-		bookService.reserveBook(reserveDto.getLibraryBookId(), reserveDto.getId());
+		bookService.reserveBook(reserveDto.getLibraryBookId(), reserveDto.getMid());
 		return ResponseEntity.ok("도서 예약이 완료되었습니다.");
 	}
 	
