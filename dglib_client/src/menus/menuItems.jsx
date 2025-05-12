@@ -88,9 +88,9 @@ const defaultMenuItems = [
       const userRole = 'user' // 나중에 바꾸셈
       const menuItems = [...defaultMenuItems];
       if (isLoggedIn && userRole === 'admin') {
-        menuItems[5] = adminMenuItem; 
+        menuItems[5] = adminMenuItem;
       }
-      
+
       return menuItems;
     }
   });

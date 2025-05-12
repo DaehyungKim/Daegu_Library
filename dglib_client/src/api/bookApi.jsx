@@ -8,3 +8,13 @@ export const getBookreco = async (genre) => {
     return res.data;
 }
 
+export const getLibraryBookList = async (page = 1, size = 10) => {
+    const res = await axios.get(`${prefix}/librarybooklist`, {
+        params: {
+            page,
+            size
+        }
+    });
+    return res.data;
+}
+

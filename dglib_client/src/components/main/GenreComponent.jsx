@@ -22,12 +22,12 @@ const GenreComponent = () => {
     console.log(books)
 
     return (
-        <div className="grid grid-cols-5 p-8">
+        <div className="grid grid-cols-5 pt-4 gap-0 ">
 
 
             {books.map((bookData) => (
-                <div className='p-2 flex flex-col items-center' key={bookData.doc.isbn13}>
-                    <div className="w-32 h-32">
+                <div className='flex flex-col items-center' key={bookData.doc.isbn13}>
+                    <div className="w-48 h-48">
                         <img className="w-full h-full object-contain" src={bookData.doc.bookImageURL} />
                     </div>
                     <h3 className="text-sm font-semibold text-center max-w-40 pt-2 pb-2 w-full overflow-hidden whitespace-nowrap text-ellipsis">{bookData.doc.bookname}</h3>

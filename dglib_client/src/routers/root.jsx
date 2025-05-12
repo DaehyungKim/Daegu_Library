@@ -8,14 +8,12 @@ const Main = lazy(()=> import ("../pages/MainPage"));
 const About = lazy(()=> import ("../pages/AboutPage"));
 const Login = lazy(()=> import ("../pages/LoginPage"));
 const None = lazy(()=> import ("../pages/NonePage"));
+const BooksSearch = lazy(()=> import ("../pages/BooksSearch"));
 
 const root = createBrowserRouter([
+
     {
         path: "",
-        element: <Navigate to="main" replace />
-    },
-    {
-        path: "main",
         element: <Suspense fallback={<Loading />}><Main /></Suspense>,
         children: genreRouter()
     },
@@ -30,8 +28,14 @@ const root = createBrowserRouter([
         ]
     },
     {
-        path: "books/*",
-        element: <Suspense fallback={<Loading />}><None /></Suspense>
+        path: "books",
+        element: <Suspense fallback={<Loading />}><BooksSearch /></Suspense>,
+        children: [
+            { path: "search", element: <Suspense fallback={<Loading />}><BooksSearch /></Suspense> },
+            { path: "organization", element: <Suspense fallback={<Loading />}><None /></Suspense> },
+            { path: "policy", element: <Suspense fallback={<Loading />}><None /></Suspense> },
+            { path: "location", element: <Suspense fallback={<Loading />}><None /></Suspense> },
+        ]
     },
     {
         path: "usage/*",
@@ -57,7 +61,7 @@ const root = createBrowserRouter([
         path: "signup",
         element: <Suspense fallback={<Loading />}><None /></Suspense>
     },
-    
+
 ]);
 
 export default root;

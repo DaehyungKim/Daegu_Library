@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { menuItemsSelector } from './menuItems';
 import { useRecoilValue } from 'recoil';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { menuVariants, subMenuVariants, subMenuContainerVariants } from '../animations/menuAnimation';
 
@@ -11,12 +11,19 @@ const MainMenu = () => {
     const [activeMenuIndex, setActiveMenuIndex] = useState(null);
     const menuRefs = useRef([]);
     const menuItems = useRecoilValue(menuItemsSelector);
-    
+    const navigate = useNavigate();
+
     useEffect(() => {
         const widths = menuRefs.current.map(ref => ref.getBoundingClientRect().width);
         setMenuWidths(widths);
-    }, []);//Role 의존성추가
+    }, []);
 
+    const handleNavigation = (e, path) => {
+        e.preventDefault();
+        setIsHovering(false);
+        setActiveMenuIndex(null);
+        navigate(path);
+    };
 
     return (
         <div className="relative w-full" onMouseLeave={() => {
@@ -27,7 +34,7 @@ const MainMenu = () => {
             <div className="flex justify-center py-3 bg-white relative">
                 <div className="flex items-end">
                     {menuItems.map((menu, index) => (
-                        <div 
+                        <div
                             key={menu.id}
                             ref={el => menuRefs.current[index] = el}
                             className="px-12 relative"
@@ -37,27 +44,18 @@ const MainMenu = () => {
                             }}
                         >
                             <div className="h-full flex items-center justify-center relative">
-                                <Link 
-                                    to={menu.link}
+                                <a
+                                    href={menu.link}
+                                    onClick={(e) => handleNavigation(e, menu.link)}
                                     className={`block text-center whitespace-nowrap ${
-                                        activeMenuIndex === index 
-                                            ? 'text-emerald-700 font-bold scale-105' 
+                                        activeMenuIndex === index
+                                            ? 'text-emerald-700 font-bold scale-105'
                                             : 'hover:text-emerald-500'
                                     }`}
                                 >
                                     {menu.title}
-                                </Link>
-                                <AnimatePresence>
-                                    {activeMenuIndex === index && (
-                                        <motion.div 
-                                            className="absolute bottom-[-12px] h-0.5 bg-emerald-700 z-10"
-                                            initial={{ width: '0%', left: '50%' }} 
-                                            animate={{ width: '100%', left: '0%' }} 
-                                            exit={{ width: '0%', left: '50%' }} 
-                                            transition={{ duration: 0.3, ease: "easeInOut" }} 
-                                        />
-                                    )}
-                                </AnimatePresence>
+                                </a>
+
                             </div>
                         </div>
                     ))}
@@ -65,10 +63,10 @@ const MainMenu = () => {
             </div>
 
             <div className="w-full h-[1px] bg-gray-300"></div>
-            
+
             <AnimatePresence>
                 {isHovering && (
-                    <motion.div 
+                    <motion.div
                         className="absolute left-0 w-full bg-white border-b border-b-gray-300 z-10 shadow-md"
                         variants={menuVariants}
                         initial="hidden"
@@ -77,31 +75,32 @@ const MainMenu = () => {
                     >
                         <div className="flex justify-center">
                             {menuItems.map((menu, index) => (
-                                <div 
-                                    key={menu.id} 
+                                <div
+                                    key={menu.id}
                                     className="px-6 flex justify-center"
                                     style={{ width: `${menuWidths[index]}px` }}
                                     onMouseEnter={() => setActiveMenuIndex(index)}
                                 >
-                                    <motion.ul 
+                                    <motion.ul
                                         className="py-4 text-center"
                                         initial="hidden"
                                         animate="visible"
                                         variants={subMenuContainerVariants}
                                     >
                                         {menu.subMenus.map((subMenu, subIndex) => (
-                                            <motion.li 
-                                                key={subIndex} 
+                                            <motion.li
+                                                key={subIndex}
                                                 className="py-2"
                                                 variants={subMenuVariants}
                                                 transition={{ duration: 0.3 }}
                                             >
-                                                <Link
-                                                    to={subMenu.link}
+                                                <a
+                                                    href={subMenu.link}
+                                                    onClick={(e) => handleNavigation(e, subMenu.link)}
                                                     className="block text-xs whitespace-nowrap hover:text-emerald-700 hover:font-bold"
                                                 >
                                                     {subMenu.name}
-                                                </Link>
+                                                </a>
                                             </motion.li>
                                         ))}
                                     </motion.ul>
