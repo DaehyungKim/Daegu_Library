@@ -7,7 +7,6 @@ import Loading from "../../routers/Loading";
 const FilterBookListComponent = () => {
     const [books, setBooks] = useState([]);
     const [pageable, setPageable] = useState({});
-
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
